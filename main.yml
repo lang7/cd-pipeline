@@ -1,8 +1,8 @@
 - hosts: localhost
+  connection: local
   become: false
     
   tasks:
 
   - name: do something
-    shell: >
-      echo "hello jenkins"
+    shell: echo "hello jenkins"

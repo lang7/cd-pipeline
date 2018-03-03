@@ -1,0 +1,36 @@
+---
+- name: "Install CodeDeploy Agent"
+  hosts: localhost
+  connection: local
+  become: yes
+
+  tasks:
+    - name: "Install ruby"
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - ruby
+
+    - name: "Get CodeDeploy | s3"
+      get_url:
+        url: "https://aws-codedeploy-eu-west-2.s3.amazonaws.com/latest/install"
+        dest: /tmp/codedeploy-install
+
+    - name: "Codedeploy Install Binary | Permission Executable"
+      file:
+        state: file
+        path: /tmp/codedeploy-install
+        group: root
+        owner: root
+        mode: 0755
+
+    - name: "Codedeploy Install"
+      become: true
+      command: /tmp/codedeploy-install auto
+
+    - name: service | codedeploy-agent | started
+      service:
+        name: codedeploy-agent
+        state: started
+       

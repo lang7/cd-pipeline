@@ -1,0 +1,21 @@
+{
+    "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "AKIAIZBFNDR2VZJV7UWA",
+    "secret_key": "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",
+    "region": "eu-west-2",
+    "source_ami": "ami-941e04f0",
+    "instance_type": "t2.nano",
+    "ssh_username": "ubuntu",
+    "ami_name": "DemoCodeDeployBase",
+         "ami_description": "Ubuntu Image with CodeDeploy Agent installed"
+        }
+],
+
+    "provisioners": [
+    {
+    "type": "shell",
+    "script": "provision.sh"
+    }
+  ]
+}

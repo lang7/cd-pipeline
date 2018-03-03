@@ -1,0 +1,8 @@
+- hosts: localhost
+  become: false
+    
+  tasks:
+
+  - name: do something
+    shell: >
+      echo "hello jenkins"

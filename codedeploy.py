@@ -95,7 +95,7 @@ lcf = template.add_resource(LaunchConfiguration(
     "lcf",
     AssociatePublicIpAddress=False,
     ImageId='ami-4faa4d28',
-    InstanceType='t2.micro',
+    InstanceType='t2.nano',
     KeyName='Demo',
     SecurityGroups=[Ref(instancesg)],
 ))

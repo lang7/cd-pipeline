@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation Template Demo
+Resources:
+  DemoDeploymentGroup:
+    Properties:
+      ApplicationName: !Ref 'cdapp'
+      AutoRollbackConfiguration:
+        Enabled: true
+        Events:
+          - DEPLOYMENT_FAILURE
+      AutoScalingGroups:
+        - !Ref 'asg'
+      DeploymentStyle:
+        DeploymentOption: WITH_TRAFFIC_CONTROL
+      LoadBalancerInfo:
+        TargetGroupInfoList:
+          - Name: !GetAtt 'WebTargets.TargetGroupName'
+      ServiceRoleArn: arn:aws:iam::364564756213:role/Admin
+    Type: AWS::CodeDeploy::DeploymentGroup
+  FrontendAlb:
+    Properties:
+      Scheme: internet-facing
+      Subnets:
+        - subnet-c78a4fae
+        - subnet-c64b4e8c
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+  Listener:
+    Properties:
+      DefaultActions:
+        - TargetGroupArn: !Ref 'WebTargets'
+          Type: forward
+      LoadBalancerArn: !Ref 'FrontendAlb'
+      Port: '80'
+      Protocol: HTTP
+    Type: AWS::ElasticLoadBalancingV2::Listener
+  ListenerRule:
+    Properties:
+      Actions:
+        - TargetGroupArn: !Ref 'WebTargets'
+          Type: forward
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /*
+      ListenerArn: !Ref 'Listener'
+      Priority: '1'
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+  WebTargets:
+    Properties:
+      HealthCheckIntervalSeconds: '30'
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: '10'
+      HealthyThresholdCount: '4'
+      Matcher:
+        HttpCode: '200'
+      Name: WebTarget
+      Port: '80'
+      Protocol: HTTP
+      UnhealthyThresholdCount: '3'
+      VpcId: vpc-f8d62a91
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+  asg:
+    Properties:
+      DesiredCapacity: '0'
+      HealthCheckGracePeriod: '10'
+      HealthCheckType: EC2
+      LaunchConfigurationName: !Ref 'lcf'
+      MaxSize: '1'
+      MinSize: '0'
+      TargetGroupARNs:
+        - !Ref 'WebTargets'
+      VPCZoneIdentifier:
+        - subnet-c78a4fae
+        - subnet-c64b4e8c
+    Type: AWS::AutoScaling::AutoScalingGroup
+  cdapp:
+    Properties:
+      ApplicationName: demoapp
+      ComputePlatform: Server
+    Type: AWS::CodeDeploy::Application
+  instancesg:
+    Properties:
+      GroupDescription: SG For ASG instances
+      SecurityGroupIngress:
+        - FromPort: '80'
+          IpProtocol: tcp
+          SourceSecurityGroupId: !Ref 'lbsg'
+          ToPort: '80'
+      VpcId: vpc-f8d62a91
+    Type: AWS::EC2::SecurityGroup
+  lbsg:
+    Properties:
+      GroupDescription: SG For ALB
+      SecurityGroupIngress:
+        - CidrIp: 52.56.182.198/32
+          FromPort: '80'
+          IpProtocol: tcp
+          ToPort: '80'
+      VpcId: vpc-f8d62a91
+    Type: AWS::EC2::SecurityGroup
+  lcf:
+    Properties:
+      AssociatePublicIpAddress: 'false'
+      ImageId: ami-4faa4d28
+      InstanceType: t2.micro
+      KeyName: Demo
+      SecurityGroups:
+        - !Ref 'instancesg'
+    Type: AWS::AutoScaling::LaunchConfiguration
+

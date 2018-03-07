@@ -101,7 +101,7 @@ Resources:
   lcf:
     Properties:
       AssociatePublicIpAddress: 'false'
-      ImageId: ami-4faa4d28
+      ImageId: ami-5afb1c3d
       InstanceType: t2.nano
       KeyName: Demo
       SecurityGroups:

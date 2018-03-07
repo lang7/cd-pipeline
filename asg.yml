@@ -61,7 +61,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
   asg:
     Properties:
-      DesiredCapacity: '3'
+      DesiredCapacity: '0'
       HealthCheckGracePeriod: '10'
       HealthCheckType: EC2
       LaunchConfigurationName: !Ref 'lcf'

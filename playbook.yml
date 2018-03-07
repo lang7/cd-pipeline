@@ -33,22 +33,3 @@
       service:
         name: codedeploy-agent
         state: started
-
-    - name: base configuration | Packages
-      yum:
-        state: present
-        name: "{{ item }}"
-      with_items:
-        - wget
-        - telnet
-        - epel-release
-    
-    - name: install nginx
-      yum:
-        state: present
-        name: nginx
-
-    - name: start nginx
-      service:
-        name: nginx
-        state: started

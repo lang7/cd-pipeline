@@ -4,11 +4,11 @@
     "access_key": "",
     "secret_key": "",
     "region": "eu-west-2",
-    "source_ami": "ami-941e04f0",
+    "source_ami": "ami-403e2524",
     "instance_type": "t2.nano",
-    "ssh_username": "ubuntu",
-    "ami_name": "DemoCodeDeployBase",
-         "ami_description": "Ubuntu Image with CodeDeploy Agent installed"
+    "ssh_username": "ec2-user",
+    "ami_name": "DemoCodeDeployNginx",
+         "ami_description": "redhat Image with CodeDeploy Agent installed"
         }
 ],
 

@@ -6,7 +6,7 @@
 
   tasks:
     - name: "Install ruby"
-      apt:
+      yum:
         name: "{{ item }}"
         state: present
       with_items:
@@ -38,15 +38,7 @@
   hosts: localhost
   connection: local
   become: yes
-  tasks:    
-    - name: base configuration | Packages
-      yum:
-        state: present
-        name: "{{ item }}"
-      with_items:
-        - wget
-        - telnet
-        - epel-release
+  tasks:
     
     - name: install nginx
       yum:
@@ -57,3 +49,8 @@
       service:
         name: nginx
         state: started
+
+    - name: start on boot
+      systemd:
+        name: nginx
+        enabled: true

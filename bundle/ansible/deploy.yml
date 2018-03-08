@@ -3,18 +3,9 @@
   hosts: localhost
   connection: local
   become: yes
-  tasks:    
-    - name: base configuration | Packages
-      apt:
-        state: present
-        name: "{{ item }}"
-      with_items:
-        - wget
-        - telnet
-        - epel-release
-    
+  tasks:
     - name: install nginx
-      apt:
+      yum:
         state: present
         name: nginx
 
@@ -22,8 +13,8 @@
       service:
         name: nginx
         state: started
-    
+
     - name: start on boot
-      systemd:
+      service:
         name: nginx
         enabled: true

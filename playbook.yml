@@ -34,12 +34,6 @@
         name: codedeploy-agent
         state: started
 
-- name: "Install nginx"
-  hosts: localhost
-  connection: local
-  become: yes
-  tasks:
-    
     - name: install nginx
       yum:
         state: present

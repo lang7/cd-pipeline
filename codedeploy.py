@@ -94,7 +94,7 @@ template.add_resource(elb.ListenerRule(
 lcf = template.add_resource(LaunchConfiguration(
     "lcf",
     AssociatePublicIpAddress=False,
-    ImageId='ami-5afb1c3d',
+    ImageId='ami-63d53204',
     InstanceType='t2.nano',
     KeyName='Demo',
     SecurityGroups=[Ref(instancesg)],

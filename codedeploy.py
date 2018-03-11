@@ -102,7 +102,7 @@ lcf = template.add_resource(LaunchConfiguration(
 
 asg = template.add_resource(AutoScalingGroup(
     "asg",
-    DesiredCapacity="1",
+    DesiredCapacity="0",
     HealthCheckGracePeriod="10",
     HealthCheckType='EC2',
     LaunchConfigurationName=Ref(lcf),

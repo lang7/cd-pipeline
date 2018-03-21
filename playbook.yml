@@ -45,6 +45,6 @@
         state: started
 
     - name: start on boot
-      systemd:
+      service:
         name: nginx
         enabled: true
